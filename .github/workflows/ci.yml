@@ -9,7 +9,7 @@ on:
 jobs:
   php:
     name: PHP Tests & Lint
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
 
     services:
       mariadb:
@@ -67,7 +67,7 @@ jobs:
 
   frontend:
     name: Frontend Lint & Build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
 
     steps:
       - uses: actions/checkout@v4
@@ -97,7 +97,7 @@ jobs:
 
   cli:
     name: CLI Tests & Build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
 
     steps:
       - uses: actions/checkout@v4
