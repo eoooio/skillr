@@ -30,12 +30,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          extensions: pdo, pdo_mysql, mbstring, bcmath, gd, opcache
-          coverage: none
+      - name: Setup PHP 8.4
+        run: |
+          mkdir -p "$RUNNER_TEMP/phpbin"
+          ln -sf /usr/bin/php8.4 "$RUNNER_TEMP/phpbin/php"
+          curl -fsSL https://getcomposer.org/download/latest-stable/composer.phar -o "$RUNNER_TEMP/phpbin/composer.phar"
+          printf '#!/usr/bin/env bash\nexec "%s/php" "%s/composer.phar" "$@"\n' "$RUNNER_TEMP/phpbin" "$RUNNER_TEMP/phpbin" > "$RUNNER_TEMP/phpbin/composer"
+          chmod +x "$RUNNER_TEMP/phpbin/composer"
+          echo "$RUNNER_TEMP/phpbin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/phpbin/php" --version
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
